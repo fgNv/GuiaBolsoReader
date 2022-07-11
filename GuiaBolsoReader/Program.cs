@@ -25,11 +25,11 @@ namespace GuiaBolsoReader
             var fileContent = File.ReadAllText(@"C:\Users\plane\Desktop\2022-06-guiabolso.json", System.Text.Encoding.UTF8);
             var deserializedContent = JsonConvert.DeserializeObject<Root>(fileContent);
 
-
+            var categoryTypes = deserializedContent.Payload.RawData.CategoryTypes.SelectMany(g => g.Categories).ToDictionary(c => c.Id, c => c.Name);
             var items = deserializedContent.Payload
                                            .UserMonthHistory
                                            .Statements
-                                           .SelectMany(s => s.Transactions.Select(t => $"{t.Label};{t.OriginalValue};{FormatUnix(t.Date)};{t.CategoryId}"))
+                                           .SelectMany(s => s.Transactions.Select(t => $"{t.Id};\"{t.Label}\";{t.OriginalValue};{FormatUnix(t.Date)};{categoryTypes[t.CategoryId]}"))
                                            .ToList();
 
             File.WriteAllLines(@"C:\Users\plane\Desktop\2022-06-guiabolso.csv", items, System.Text.Encoding.UTF8);

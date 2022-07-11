@@ -91,7 +91,7 @@ namespace GuiaBolsoReader
         public double Cards { get; set; }
 
         [JsonProperty("investments")]
-        public double Investments { get; set; }
+        public double? Investments { get; set; }
 
         [JsonProperty("money")]
         public object Money { get; set; }
